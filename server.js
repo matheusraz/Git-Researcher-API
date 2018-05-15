@@ -7,19 +7,21 @@ const port = 3000
 app.use(useragent.express());
 
 app.get('/', (req, resp) => {
-  resp.send('Olá usuário, eu sou o server teste para consumir a API do Git!')
+  resp.send('Olá usuário, eu sou o server teste para consumir a API do Git!\n\n')
 })
 
 const reqGit = {
-  header: 'MyTrainingAPIGitApp',
+  headers: {
+    'User-Agent': 'My-Training-API-Git-App'
+  },
   method: 'GET',
   uri: 'https://api.github.com/repos/Lerissonf/IA-projeto2/readme'
 }
 
-request(reqGit, (err, resp, body) => {
+request(reqGit, (err, resp) => {
   console.log('erro:', err);
   console.log('statusCode:', resp && resp.statusCode);
-  console.log(body);
+  console.log(resp.body);
 });
 
 app.listen(port, (err) => {
