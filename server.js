@@ -6,8 +6,11 @@ const port = 3000
 
 app.use(useragent.express());
 
+let obj = {}
+
 app.get('/', (req, resp) => {
-  resp.send('Olá usuário, eu sou o server teste para consumir a API do Git!\n\n')
+  //resp.send('Olá usuário, eu sou o server teste para consumir a API do Git!\n\n')
+  resp.json(obj);
 })
 
 const reqGit = {
@@ -21,7 +24,8 @@ const reqGit = {
 request(reqGit, (err, resp) => {
   console.log('erro:', err);
   console.log('statusCode:', resp && resp.statusCode);
-  console.log(resp.body);
+  console.log(JSON.parse(resp.body).name);
+  obj = resp.body;
 });
 
 app.listen(port, (err) => {
