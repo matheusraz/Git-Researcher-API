@@ -3,13 +3,13 @@ const request = require('request')
 const app = express()
 const port = 3000
 
-app.get('/', (req, res) => {
+app.get('/lerReadme/:nome/:repo', (req, res) => {
   const reqGit = {
     headers: {
       'User-Agent': 'GitHub-Researcher-API'
     },
     method: 'GET',
-    uri: `https://api.github.com/repos/${req.query.name.toString()}/${req.query.repo.toString()}/readme`
+    uri: `https://api.github.com/repos/${req.params.nome}/${req.params.repo}/readme`
   }
 
   request(reqGit, (err, resp) => {
@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
     console.log('statusCode:', resp && resp.statusCode);
     let obj = JSON.parse(resp.body);
     console.log(obj);
-    let result = new Buffer(obj.content, 'base64')
-    res.send(result.toString());
+    obj.content = new Buffer(obj.content, 'base64').toString()
+    res.json(obj);
   });
 
 
