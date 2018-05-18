@@ -4,7 +4,6 @@
   "description": "API da aplicação que integra APIs do Github",
   "main": "server.js",
   "scripts": {
-    "postinstall": "npm run build",
     "start": "node server.js"
   },
   "dependencies": {
