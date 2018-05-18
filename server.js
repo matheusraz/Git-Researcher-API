@@ -22,10 +22,9 @@ app.get('/lerReadme/:nome/:repo', (req, res) => {
     res.json(obj);
   });
 
-
 })
 
-app.listen(port, (err) => {
+app.listen(process.env.PORT || port, (err) => {
   if (err) {
     return console.log('algo errado aconteceu', err)
   }
