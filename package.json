@@ -4,7 +4,7 @@
   "description": "API da aplicação que integra APIs do Github",
   "main": "server.js",
   "scripts": {
-    "start": "npm start"
+    "start": "node server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -23,8 +23,5 @@
     "express"
   ],
   "author": "Matheus Raz",
-  "contributors": [
-    "Matheus Raz <mrol@cin.ufpe.br> ()"
-  ],
   "license": "MIT"
 }
