@@ -4,7 +4,7 @@
   "description": "API da aplicação que integra APIs do Github",
   "main": "server.js",
   "scripts": {
-    "start": "npm run build && node server.js"
+    "start": "npm start"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
