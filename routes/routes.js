@@ -22,6 +22,29 @@ let appRouter = (app) => {
 
   });
 
+  app.get('autentica/:nome/:senha', (req, res) => {
+    let user = new Buffer(`${req.params.nome} : ${req.params.senha}`)
+    let encodedAuth = user.toString('Base64');
+    console.log(encodedAuth);
+    
+    const reqUser = {
+      headers: {
+        'Authorization': 'Basic ' + encodedAuth
+      },
+      method: 'GET',
+      uri: 'https://api.github.com/user'
+    }
+
+    request(req, (err,resp) => {
+      console.log(req.uri);
+      console.log('erro: ', err);
+      console.log('statusCode:', resp && resp.statusCode);
+      let obj = JSON.parse(resp.body);
+      console.log(obj);
+    });
+
+  });
+
 }
 
 module.exports = appRouter;
