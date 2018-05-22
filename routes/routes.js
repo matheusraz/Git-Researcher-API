@@ -1,6 +1,12 @@
 const request = require('request')
+const path = require('path')
+//const views = require('./views/endpoints.html')
 
 let appRouter = (app) => {
+  app.get('/',(req,res) => {
+    res.sendFile(path.join(__dirname+'/views/endpoints.html'));
+  });
+
   app.get('/lerReadme/:nome/:repo', (req, res) => {
     const reqGit = {
       headers: {
