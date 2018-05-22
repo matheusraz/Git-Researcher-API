@@ -29,5 +29,7 @@
     "url": "https://github.com/heroku/git-researcher-api/issues"
   },
   "homepage": "https://github.com/heroku/git-researcher-api#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^1.17.4"
+  }
 }

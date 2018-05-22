@@ -8,7 +8,7 @@ let appRouter = (app) => {
       },
       method: 'GET',
       uri: `https://api.github.com/repos/${req.params.nome}/${req.params.repo}/readme`
-    }
+    };
 
     request(reqGit, (err, resp) => {
       console.log(reqGit.uri);
@@ -22,25 +22,27 @@ let appRouter = (app) => {
 
   });
 
-  app.get('autentica/:nome/:senha', (req, res) => {
-    let user = new Buffer(`${req.params.nome} : ${req.params.senha}`)
-    let encodedAuth = user.toString('Base64');
-    console.log(encodedAuth);
-    
+  app.get('/autentica/:nome/:senha', (req, res) => {
+
     const reqUser = {
       headers: {
-        'Authorization': 'Basic ' + encodedAuth
+        'User-Agent': 'GitHub-Researcher-API',
+        'Authorization': 'Basic ' + Buffer.from(req.params.nome + ':' + req.params.senha).toString('base64')
       },
       method: 'GET',
       uri: 'https://api.github.com/user'
-    }
+    };
 
-    request(req, (err,resp) => {
-      console.log(req.uri);
+    console.log(reqUser.headers['Authorization']);
+
+    request(reqUser, (err,resp) => {
+      console.log(reqUser.uri);
       console.log('erro: ', err);
       console.log('statusCode:', resp && resp.statusCode);
       let obj = JSON.parse(resp.body);
       console.log(obj);
+      console.log("id do usuário: ",obj.id)
+      res.json(obj);
     });
 
   });
