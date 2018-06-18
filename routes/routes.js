@@ -45,7 +45,7 @@ let appRouter = (app) => {
       console.log(reqUser.uri);
       console.log('erro: ', err);
       console.log('statusCode:', resp && resp.statusCode);
-      let obj = {id: '', login: '', name: '', avatar: '', descricao: ''}
+      let obj = {};
       obj.id = JSON.parse(resp.body).id;
       obj.login = JSON.parse(resp.body).login;
       obj.name = JSON.parse(resp.body).name;
