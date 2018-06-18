@@ -28,6 +28,34 @@ let appRouter = (app) => {
 
   });
 
+  app.get('/repos/:nome/', (req, res) => {
+    const reqGit = {
+      headers: {
+        'User-Agent': 'GitHub-Researcher-API'
+      },
+      method: 'GET',
+      uri: `https://api.github.com/users/${req.params.nome}/repos`
+    };
+
+    request(reqGit, (err, resp) => {
+      console.log(reqGit.uri);
+      console.log('erro:', err);
+      console.log('statusCode:', resp && resp.statusCode);
+      let itens = JSON.parse(resp.body);
+      let obj = {};
+      let objs = []
+      for(let i=0; i<itens.length; i++){
+        obj.id = itens[i].id;
+        obj.nome = itens[i].name;
+        objs.push(obj);
+        obj = {};
+      }
+      console.log(objs);
+      res.json(objs);
+    });
+
+  });
+
   app.get('/autentica/:nome/:senha', (req, res) => {
 
     const reqUser = {
@@ -51,9 +79,10 @@ let appRouter = (app) => {
       obj.name = JSON.parse(resp.body).name;
       obj.avatar = JSON.parse(resp.body).avatar_url;
       obj.bio = JSON.parse(resp.body).bio;
-      console.log(obj);
+      //console.log(obj);
+      console.log(resp.body);
       console.log("id do usuário: ",obj.id)
-      res.json(obj);
+      res.json(resp.body);
     });
 
   });

@@ -31,6 +31,6 @@
   },
   "homepage": "https://github.com/heroku/git-researcher-api#readme",
   "devDependencies": {
-    "nodemon": "^1.17.4"
+    "nodemon": "^1.17.5"
   }
 }
