@@ -79,9 +79,9 @@ let appRouter = (app) => {
       obj.name = JSON.parse(resp.body).name;
       obj.avatar = JSON.parse(resp.body).avatar_url;
       obj.bio = JSON.parse(resp.body).bio;
-      console.log(resp.body);
+      console.log(obj);
       console.log("id do usuário: ",obj.id)
-      res.json(JSON.parse(resp.body));
+      res.json(obj);
     });
 
   });
