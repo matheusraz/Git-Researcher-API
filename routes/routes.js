@@ -87,6 +87,40 @@ let appRouter = (app) => {
 
   });
 
+  app.get('/autentica', (req,res) => {
+
+    console.log(req.headers);
+
+    let user = req.headers['user'].split(':')[0];
+    let pass = req.headers['user'].split(':')[1];
+
+    console.log(user);
+    console.log(pass);
+
+    const reqUser = {
+      headers: {
+        'User-Agent': 'GitHub-Researcher-API',
+        'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64')
+      },
+      method: 'GET',
+      uri: 'https://api.github.com/user'
+    };
+
+    request(reqUser, (err,resp) => {
+      console.log(reqUser.uri);
+      console.log('erro: ', err);
+      console.log('statusCode:', resp && resp.statusCode);
+      let obj = {};
+      obj.id = JSON.parse(resp.body).id;
+      obj.login = JSON.parse(resp.body).login;
+      obj.name = JSON.parse(resp.body).name;
+      obj.avatar = JSON.parse(resp.body).avatar_url;
+      obj.bio = JSON.parse(resp.body).bio;
+      console.log(obj);
+      res.json(obj);
+    });
+  });
+
 }
 
 module.exports = appRouter;
