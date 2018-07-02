@@ -90,14 +90,18 @@ let appRouter = (app) => {
     });
   });
 
-  app.get('/commit/:login/:repo/:branch/', (req,res) => {
+  app.post('/commit/:login/:repo/:branch/', (req,res) => {
 
     let user = req.headers['user'].split(':')[0];
     let pass = req.headers['user'].split(':')[1];
-    let content = req.headers['content'];
-    let arqName = req.headers['arquivo'];
-    let commitMsg = req.headers['commitmsg']
+    let content = req.body.content;
+    let arqName = req.body.arquivo;
+    let commitMsg = req.body.commitmsg;
 
+    console.log(req.body);
+    console.log(content);
+    console.log(arqName);
+    console.log(commitMsg);
     const reqUser = {
       headers: {
         'User-Agent': 'GitHub-Researcher-API'
