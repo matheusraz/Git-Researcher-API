@@ -99,10 +99,6 @@ let appRouter = (app) => {
     let arqName = req.body.arquivo;
     let commitMsg = req.body.commitmsg;
 
-    console.log(req.body);
-    console.log(content);
-    console.log(arqName);
-    console.log(commitMsg);
     const reqUser = {
       headers: {
         'User-Agent': 'GitHub-Researcher-API'
