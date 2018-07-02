@@ -46,7 +46,8 @@ let appRouter = (app) => {
       let objs = []
       for(let i=0; i<itens.length; i++){
         obj.id = itens[i].id;
-        obj.nome = itens[i].name;
+        obj.userId = itens[i].owner.id;
+        obj.name = itens[i].name;
         objs.push(obj);
         obj = {};
       }
