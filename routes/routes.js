@@ -46,7 +46,7 @@ let appRouter = (app) => {
       let objs = []
       for(let i=0; i<itens.length; i++){
         obj.id = itens[i].id;
-        obj.nome = itens[i].name;
+        obj.name = itens[i].name;
         objs.push(obj);
         obj = {};
       }
@@ -87,6 +87,124 @@ let appRouter = (app) => {
       obj.bio = JSON.parse(resp.body).bio;
       console.log(obj);
       res.json(obj);
+    });
+  });
+
+  app.get('/commit/:login/:repo/:branch/', (req,res) => {
+
+    let user = req.headers['user'].split(':')[0];
+    let pass = req.headers['user'].split(':')[1];
+    let content = req.headers['content'];
+    let arqName = req.headers['arquivo'];
+    let commitMsg = req.headers['commitmsg']
+
+    const reqUser = {
+      headers: {
+        'User-Agent': 'GitHub-Researcher-API'
+      },
+      method: 'GET',
+      uri: `https://api.github.com/repos/${req.params.login}/${req.params.repo}/git/refs/heads/${req.params.branch}`
+    };
+
+    request(reqUser, (err, resp) => {
+      let obj = JSON.parse(resp.body);
+      const reqCommit = {
+        headers: {
+          'User-Agent': 'GitHub-Researcher-API'
+        },
+        method: 'GET',
+        uri: obj.object.url
+      }
+      request(reqCommit, (err,respCommit) => {
+        let commitObj = JSON.parse(respCommit.body);
+        let valInfo = {};
+        valInfo.sha = commitObj.sha;
+        valInfo.tree_sha = commitObj.tree.sha;
+        valInfo.tree_url = commitObj.tree.url;
+        const reqBlob = {
+          headers: {
+            'User-Agent': 'GitHub-Researcher-API',
+            'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64')
+          },
+          method: 'POST',
+          uri: `https://api.github.com/repos/${req.params.login}/${req.params.repo}/git/blobs`,
+          body: {
+            content: content,
+            encoding: 'utf-8'
+          },
+          json: true
+        }
+        request(reqBlob, (err,respBlob) => {
+          let objBlob = respBlob.body;
+          const reqTree = {
+            headers: {
+              'User-Agent': 'GitHub-Researcher-API'
+            },
+            method: 'GET',
+            uri: valInfo.tree_url
+          }
+          request(reqTree, (err, respTree) => {
+            let objTreeAtual = JSON.parse(respTree.body);
+            let reqNewTree = {
+              headers: {
+                'User-Agent': 'GitHub-Researcher-API',
+                'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64')
+              },
+              method: 'POST',
+              uri: `https://api.github.com/repos/${req.params.login}/${req.params.repo}/git/trees`,
+              body: {
+                base_tree: objTreeAtual.sha,
+                tree: [
+                  {
+                    path: arqName,
+                    mode: '100644',
+                    type: 'blob',
+                    sha: objBlob.sha
+                  }
+                ]
+              },
+              json: true
+            };
+            request(reqNewTree, (err, respNewTree) => {
+              let objNewTree = respNewTree.body;
+              let reqNewCommit = {
+                headers: {
+                  'User-Agent': 'GitHub-Researcher-API',
+                  'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64')
+                },
+                method: 'POST',
+                uri: `https://api.github.com/repos/${req.params.login}/${req.params.repo}/git/commits`,
+                body: {
+                  "message": commitMsg,
+                  "parents": [valInfo.sha],
+                  "tree": objNewTree.sha
+                },
+                json: true
+              };
+              request(reqNewCommit, (err, respNewCommit) => {
+                let objNewCommit = respNewCommit.body;
+                let reqUpdateHead = {
+                  headers: {
+                    'User-Agent': 'GitHub-Researcher-API',
+                    'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64')
+                  },
+                  method: 'PATCH',
+                  uri: `https://api.github.com/repos/${req.params.login}/${req.params.repo}/git/refs/heads/${req.params.branch}`,
+                  body: {
+                    sha: objNewCommit.sha,
+                    force: true
+                  },
+                  json: true
+                };
+                request(reqUpdateHead, (err,respUpdateHead) => {
+                  let objUpdateHead = respUpdateHead.body;
+                  res.json(objUpdateHead);
+                });
+              });
+            });
+          });
+        });
+      });
     });
   });
 
