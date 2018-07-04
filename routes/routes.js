@@ -45,9 +45,8 @@ let appRouter = (app) => {
       let obj = {};
       let objs = []
       for(let i=0; i<itens.length; i++){
-        obj.id = itens[i].id;
-        obj.userId = itens[i].owner.id;
         obj.name = itens[i].name;
+        obj.userLogin = itens[i].owner.login;
         objs.push(obj);
         obj = {};
       }
@@ -81,7 +80,6 @@ let appRouter = (app) => {
       console.log('erro: ', err);
       console.log('statusCode:', resp && resp.statusCode);
       let obj = {};
-      obj.id = JSON.parse(resp.body).id;
       obj.login = JSON.parse(resp.body).login;
       obj.name = JSON.parse(resp.body).name;
       obj.avatar = JSON.parse(resp.body).avatar_url;
