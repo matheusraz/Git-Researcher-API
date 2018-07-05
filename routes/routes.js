@@ -89,6 +89,19 @@ let appRouter = (app) => {
     });
   });
 
+  app.get('/search/repos/:repo/:page/:amountPage', (req, res) => {
+    const reqSearch = {
+      headers: {
+        'User-Agent': 'GitHub-Researcher-API',
+      },
+      method: 'GET',
+      uri: `https://api.github.com/search/repositories?q=${req.params.repo}&page=${req.params.page}&per_page=${req.params.amountPage}`
+    }
+    request(reqSearch, (err,resp) => {
+      res.json(JSON.parse(resp.body));
+    });
+  });
+
   app.post('/commit/:login/:repo/:branch/', (req,res) => {
 
     let user = req.headers['user'].split(':')[0];
