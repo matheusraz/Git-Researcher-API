@@ -98,7 +98,17 @@ let appRouter = (app) => {
       uri: `https://api.github.com/search/repositories?q=${req.params.repo}&page=${req.params.page}&per_page=${req.params.amountPage}`
     }
     request(reqSearch, (err,resp) => {
-      res.json(JSON.parse(resp.body));
+      let item = JSON.parse(resp.body);
+      let itens = item.items
+      let obj = {};
+      let objs = []
+      for(let i=0; i<itens.length; i++){
+        obj.name = itens[i].name;
+        obj.userLogin = itens[i].owner.login;
+        objs.push(obj);
+        obj = {};
+      }
+      res.json(objs);
     });
   });
 
