@@ -47,6 +47,9 @@ let appRouter = (app) => {
       for(let i=0; i<itens.length; i++){
         obj.name = itens[i].name;
         obj.userLogin = itens[i].owner.login;
+        obj.description = itens[i].description;
+        obj.language = itens[i].language;
+        obj.createdAt = itens[i].created_at;
         objs.push(obj);
         obj = {};
       }
@@ -106,6 +109,9 @@ let appRouter = (app) => {
       for(let i=0; i<itens.length; i++){
         obj.name = itens[i].name;
         obj.userLogin = itens[i].owner.login;
+        obj.description = itens[i].description;
+        obj.language = itens[i].language;
+        obj.createdAt = itens[i].created_at;
         objs.push(obj);
         obj = {};
       }
