@@ -82,6 +82,7 @@ let appRouter = (app) => {
       let obj = {};
       obj.login = JSON.parse(resp.body).login;
       obj.name = JSON.parse(resp.body).name;
+      obj.email = JSON.parse(resp.body).email;
       obj.avatar = JSON.parse(resp.body).avatar_url;
       obj.bio = JSON.parse(resp.body).bio;
       console.log(obj);
