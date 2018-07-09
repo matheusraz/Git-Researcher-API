@@ -20,9 +20,10 @@ let appRouter = (app) => {
       console.log(reqGit.uri);
       console.log('erro:', err);
       console.log('statusCode:', resp && resp.statusCode);
-      let obj = JSON.parse(resp.body);
+      let obj = {}
+      obj.name = JSON.parse(resp.body).name
+      obj.content = new Buffer(JSON.parse(resp.body).content, 'base64').toString()
       console.log(obj);
-      obj.content = new Buffer(obj.content, 'base64').toString()
       res.json(obj);
     });
 
