@@ -45,8 +45,9 @@ let appRouter = (app) => {
       let obj = {};
       let objs = []
       for(let i=0; i<itens.length; i++){
-        obj.name = itens[i].name;
-        obj.userLogin = itens[i].owner.login;
+        obj.id = itens[i].id;
+        obj.name = itens[i].full_name;
+        obj.userId = itens[i].owner.id;
         obj.description = itens[i].description;
         obj.language = itens[i].language;
         obj.createdAt = itens[i].created_at;
@@ -83,6 +84,7 @@ let appRouter = (app) => {
       console.log('erro: ', err);
       console.log('statusCode:', resp && resp.statusCode);
       let obj = {};
+      obj.id = JSON.parse(resp.body).id;
       obj.login = JSON.parse(resp.body).login;
       obj.name = JSON.parse(resp.body).name;
       obj.email = JSON.parse(resp.body).email;
@@ -107,8 +109,9 @@ let appRouter = (app) => {
       let obj = {};
       let objs = []
       for(let i=0; i<itens.length; i++){
-        obj.name = itens[i].name;
-        obj.userLogin = itens[i].owner.login;
+        obj.id = itens[i].id;
+        obj.name = itens[i].full_name;
+        obj.userId = itens[i].owner.id;
         obj.description = itens[i].description;
         obj.language = itens[i].language;
         obj.createdAt = itens[i].created_at;
